@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>文章列表 · 云栖</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="topnav" data-od-id="topnav">
+    <div class="topnav-inner">
+      <a href="index.html" class="topnav-brand">云栖</a>
+      <nav class="topnav-links">
+        <a href="articles.html" class="active">文章</a>
+        <a href="about.html">关于</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-main" data-od-id="main">
+    <div class="container-narrow">
+      <div class="article-list-header">
+        <h2>文章</h2>
+        <div class="search-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+          </svg>
+          <input type="search" class="search-input" id="search" placeholder="搜索文章…" autocomplete="off" />
+        </div>
+      </div>
+
+      <div class="article-list" id="article-list">
+        {{{article_list}}}
+      </div>
+
+      <div class="no-results" id="no-results" style="display: none;">
+        未找到匹配的文章。
+      </div>
+    </div>
+  </main>
+
+  <footer class="pagefoot" data-od-id="footer">
+    <div class="container">© 2026 云栖</div>
+  </footer>
+
+  <script>
+    (function() {
+      var input = document.getElementById('search');
+      var rows = document.querySelectorAll('.log-row');
+      var noResults = document.getElementById('no-results');
+
+      input.addEventListener('input', function() {
+        var q = this.value.toLowerCase().trim();
+        var visible = 0;
+
+        rows.forEach(function(row) {
+          var kw = (row.getAttribute('data-keywords') || '') + ' ' +
+                   (row.textContent || '').toLowerCase();
+          if (!q || kw.toLowerCase().indexOf(q) !== -1) {
+            row.style.display = '';
+            visible++;
+          } else {
+            row.style.display = 'none';
+          }
+        });
+
+        noResults.style.display = visible === 0 ? '' : 'none';
+      });
+    })();
+  </script>
+</body>
+</html>

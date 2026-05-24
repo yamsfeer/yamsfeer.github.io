@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>云栖</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="topnav" data-od-id="topnav">
+    <div class="topnav-inner">
+      <a href="index.html" class="topnav-brand">云栖</a>
+      <nav class="topnav-links">
+        <a href="articles.html">文章</a>
+        <a href="about.html">关于</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-main" data-od-id="main">
+    <section class="home-hero" data-od-id="hero">
+      <div class="container-narrow">
+        <h1>思考、构建、记录。</h1>
+        <p class="bio">一位软件工程师的博客。记录技术探索、系统设计与工程实践中的思考。</p>
+        <div class="home-links">
+          <a href="articles.html" class="btn btn-primary">阅读文章</a>
+          <a href="about.html" class="btn btn-secondary">了解更多</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="container-narrow" style="padding-bottom: var(--space-16);" data-od-id="recent-articles">
+      <h2 class="section-heading">最近文章</h2>
+
+      <div class="article-list" style="margin-top: var(--space-8);">
+        {{{recent_articles}}}
+      </div>
+
+      <div style="text-align: center; margin-top: var(--space-10);">
+        <a href="articles.html" class="btn btn-secondary">查看全部文章 →</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pagefoot" data-od-id="footer">
+    <div class="container">© 2026 云栖</div>
+  </footer>
+</body>
+</html>

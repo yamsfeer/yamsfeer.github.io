@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{{title}}} · 云栖</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="topnav" data-od-id="topnav">
+    <div class="topnav-inner">
+      <a href="index.html" class="topnav-brand">云栖</a>
+      <nav class="topnav-links">
+        <a href="articles.html">文章</a>
+        <a href="about.html">关于</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-main" data-od-id="main">
+    <article data-od-id="article">
+      <div class="article-layout">
+        <div class="article-body" id="article-body">
+          <header class="article-header">
+            <h1>{{{title}}}</h1>
+            <span class="article-date">{{{date}}}</span>
+          </header>
+          {{{content}}}
+        </div>
+
+        <aside class="article-toc" id="article-toc">
+          <p class="article-toc-title">目录</p>
+          {{{toc_links}}}
+        </aside>
+      </div>
+    </article>
+  </main>
+
+  <div class="toc-overlay" id="toc-overlay"></div>
+  <button class="toc-toggle" id="toc-toggle" aria-label="目录">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <line x1="8" y1="6" x2="21" y2="6"/>
+      <line x1="8" y1="12" x2="21" y2="12"/>
+      <line x1="8" y1="18" x2="21" y2="18"/>
+      <circle cx="4.5" cy="6" r="1.3" fill="currentColor" stroke="none"/>
+      <circle cx="4.5" cy="12" r="1.3" fill="currentColor" stroke="none"/>
+      <circle cx="4.5" cy="18" r="1.3" fill="currentColor" stroke="none"/>
+    </svg>
+  </button>
+
+  <footer class="pagefoot" data-od-id="footer">
+    <div class="container">© 2026 云栖</div>
+  </footer>
+
+  <script>
+    (function() {
+      var body = document.getElementById('article-body');
+      var toc = document.getElementById('article-toc');
+      var headings = body.querySelectorAll('h2, h3');
+      var links = [];
+
+      headings.forEach(function(h, i) {
+        if (!h.id) h.id = 'section-' + i;
+        var a = document.createElement('a');
+        a.href = '#' + h.id;
+        a.textContent = h.textContent;
+        if (h.tagName === 'H3') a.className = 'toc-h3';
+        toc.appendChild(a);
+        links.push(a);
+      });
+
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (!e.isIntersecting) return;
+          links.forEach(function(a) { a.classList.remove('toc-active'); });
+          var target = links.find(function(a) { return a.getAttribute('href') === '#' + e.target.id; });
+          if (target) target.classList.add('toc-active');
+        });
+      }, { rootMargin: '-80px 0px -60% 0px' });
+
+      headings.forEach(function(h) { observer.observe(h); });
+
+      var toggle = document.getElementById('toc-toggle');
+      var overlay = document.getElementById('toc-overlay');
+
+      function openToc() { toc.classList.add('open'); overlay.classList.add('open'); }
+      function closeToc() { toc.classList.remove('open'); overlay.classList.remove('open'); }
+
+      toggle.addEventListener('click', function() {
+        toc.classList.contains('open') ? closeToc() : openToc();
+      });
+
+      overlay.addEventListener('click', closeToc);
+
+      toc.addEventListener('click', function(e) {
+        if (e.target.tagName === 'A') closeToc();
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && toc.classList.contains('open')) closeToc();
+      });
+    })();
+  </script>
+</body>
+</html>
