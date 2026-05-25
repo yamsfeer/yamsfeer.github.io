@@ -36,6 +36,24 @@ function readTemplate(name) {
   return fs.readFileSync(path.join(TEMPLATE_DIR, name), 'utf-8');
 }
 
+// 标准化日期为字符串，兼容 gray-matter 可能解析出的 Date 对象
+function normalizeDate(val) {
+  if (!val) return '1970-01-01';
+  if (val instanceof Date) return val.toISOString().slice(0, 10);
+  return String(val);
+}
+
+// 日期格式化：YYYY-MM-DD → YYYY年MM月DD日
+function formatDate(dateStr) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return dateStr;
+  const y = d.getFullYear();
+  const m = d.getMonth() + 1;
+  const day = d.getDate();
+  return `${y}年${m}月${day}日`;
+}
+
 // 简单的字符串替换（用 {{{}}} 避免与 Frontmatter 的 --- 冲突）
 function render(template, vars) {
   let result = template;
@@ -69,7 +87,7 @@ function buildArticleListItem(post) {
   const excerpt = post.frontmatter.excerpt || post.body.split('\n').find((l) => l.trim() && !l.startsWith('#') && !l.startsWith('!'))?.slice(0, 100) + '...' || '';
 
   return `<article class="log-row" data-keywords="${keywords} ${title}">
-          <span class="log-date">${post.frontmatter.date || ''}</span>
+          <span class="log-date">${formatDate(post.frontmatter.date)}</span>
           <div>
             <a href="${post.slug}.html" class="log-title-link"><h3 class="log-title">${title}</h3></a>
             <p class="log-excerpt">${excerpt}</p>
@@ -108,8 +126,8 @@ async function build() {
       };
     })
     .sort((a, b) => {
-      const dateA = a.frontmatter.date || '1970-01-01';
-      const dateB = b.frontmatter.date || '1970-01-01';
+      const dateA = normalizeDate(a.frontmatter.date);
+      const dateB = normalizeDate(b.frontmatter.date);
       return dateB.localeCompare(dateA);
     });
 
@@ -128,7 +146,7 @@ async function build() {
     const tocLinks = generateTocLinks(post.html);
     const html = render(postTemplate, {
       title: post.frontmatter.title || post.slug,
-      date: post.frontmatter.date || '',
+      date: formatDate(post.frontmatter.date),
       content: post.html,
       toc_links: tocLinks,
     });
