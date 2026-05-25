@@ -9,8 +9,3 @@
 ## 技术栈
 
 前端标准技术栈（TypeScript、React、Node.js），以及围绕 vibe coding 的各类工具与开发链。自己也写了不少 vibe coding 相关的工具，服务于上述自动化愿景。
-
-## 联系
-
-- [Email](mailto:{{{site_email}}})
-- [GitHub]({{{site_github}}})
