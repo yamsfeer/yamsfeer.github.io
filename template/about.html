@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>关于 · yamsfeer</title>
+  <title>关于 · {{{site_author}}}</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
   <header class="topnav" data-od-id="topnav">
     <div class="topnav-inner">
-      <a href="index.html" class="topnav-brand">yamsfeer</a>
+      <a href="index.html" class="topnav-brand">{{{site_author}}}</a>
       <nav class="topnav-links">
         <a href="articles.html">文章</a>
         <a href="about.html" class="active">关于</a>
-        <a href="https://github.com/yamsfeer" target="_blank" rel="noopener" class="nav-github" aria-label="GitHub">
+        <a href="{{{site_github}}}" target="_blank" rel="noopener" class="nav-github" aria-label="GitHub">
           <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
           </svg>
@@ -25,31 +25,13 @@
   <main class="page-main" data-od-id="main">
     <div class="container-narrow">
       <div class="about-card">
-        <h1>关于我</h1>
-        <p class="about-role">后端工程师 / 分布式系统爱好者</p>
-
-        <p>你好，我是一名专注于后端系统与基础设施的软件工程师。这个博客记录我在工作中遇到的技术挑战、系统设计思考以及工程实践中的经验总结。</p>
-
-        <p>我的技术兴趣集中在分布式系统、数据库内核、编程语言和性能优化。我相信好的软件设计来自于对基本原理的深刻理解和对工程实践的持续打磨。</p>
-
-        <h2>技术栈</h2>
-
-        <p>日常工作主要使用 <strong>Rust</strong>、<strong>Go</strong> 和 <strong>TypeScript</strong>。对 PostgreSQL 和 Kubernetes 有深入的运维和开发经验。业余时间在探索数据库存储引擎和编译器的实现。</p>
-
-        <h2>联系</h2>
-
-        <p>如果你对文章内容有疑问或建议，欢迎通过以下方式联系我：</p>
-
-        <div style="display: flex; gap: var(--space-3); flex-wrap: wrap; margin-top: var(--space-5);">
-          <a href="mailto:yamsfeer@gmail.com" class="btn btn-secondary">Email</a>
-          <a href="https://github.com/yamsfeer" class="btn btn-secondary" target="_blank" rel="noopener">GitHub</a>
-        </div>
+        {{{about_content}}}
       </div>
     </div>
   </main>
 
   <footer class="pagefoot" data-od-id="footer">
-    <div class="container">&copy; 2026 yamsfeer</div>
+    <div class="container">&copy; {{{current_year}}} {{{site_author}}}</div>
   </footer>
 </body>
 </html>

@@ -99,6 +99,24 @@ function buildArticleListItem(post) {
 async function build() {
   console.log('开始构建博客...');
 
+  // 0. 读取站点配置
+  const siteConfig = (() => {
+    const configPath = path.join(__dirname, 'site.json');
+    if (fs.existsSync(configPath)) {
+      return JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+    }
+    return {};
+  })();
+
+  const currentYear = String(new Date().getFullYear());
+
+  const siteVars = {
+    site_author: siteConfig.author || '',
+    site_github: siteConfig.github || '',
+    site_email: siteConfig.email || '',
+    current_year: currentYear,
+  };
+
   // 1. 读取所有 markdown 文章
   if (!fs.existsSync(POSTS_DIR)) {
     console.log('posts/ 目录不存在，创建空目录。');
@@ -145,6 +163,7 @@ async function build() {
   for (const post of posts) {
     const tocLinks = generateTocLinks(post.html);
     const html = render(postTemplate, {
+      ...siteVars,
       title: post.frontmatter.title || post.slug,
       date: formatDate(post.frontmatter.date),
       content: post.html,
@@ -158,6 +177,7 @@ async function build() {
   console.log('生成文章列表页...');
   const articleListItems = posts.map(buildArticleListItem).join('\n        ');
   const articlesHtml = render(articlesTemplate, {
+    ...siteVars,
     article_list: articleListItems,
   });
   fs.writeFileSync(path.join(OUTPUT_DIR, 'articles.html'), articlesHtml);
@@ -167,18 +187,25 @@ async function build() {
   const recentPosts = posts.slice(0, 5);
   const recentItems = recentPosts.map(buildArticleListItem).join('\n        ');
   const indexHtml = render(indexTemplate, {
+    ...siteVars,
     recent_articles: recentItems,
   });
   fs.writeFileSync(path.join(OUTPUT_DIR, 'index.html'), indexHtml);
 
-  // 7. 复制静态资源
-  console.log('复制静态资源...');
-  ['about.html'].forEach((file) => {
-    fs.copyFileSync(
-      path.join(TEMPLATE_DIR, file),
-      path.join(OUTPUT_DIR, file),
-    );
-  });
+  // 7. 生成关于页（从 about.md）
+  console.log('生成关于页...');
+  const aboutPath = path.join(__dirname, 'about.md');
+  if (fs.existsSync(aboutPath)) {
+    const aboutMd = fs.readFileSync(aboutPath, 'utf-8');
+    const aboutContent = marked.parse(aboutMd);
+    const aboutTemplate = readTemplate('about.html');
+    const aboutHtml = render(aboutTemplate, {
+      ...siteVars,
+      about_content: aboutContent,
+    });
+    fs.writeFileSync(path.join(OUTPUT_DIR, 'about.html'), aboutHtml);
+    console.log('  → about.html');
+  }
 
   // 递归复制 css 目录
   function copyDir(src, dest) {
